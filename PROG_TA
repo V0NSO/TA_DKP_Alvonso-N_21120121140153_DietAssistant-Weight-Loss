@@ -1,0 +1,162 @@
+package com.company;
+//Modul Yang Digunakan :
+/*Modul 1 : Variabel (DONE)
+  Modul 2 : Switch Case & IF (DONE)
+  Modul 4 : Method (DONE)
+  Modul 5 : Contructor (DONE)
+  Modul 6 : setter dan Getter (DONE)
+  Modul 8 : GUI (DONE) */
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class PROG_TA {
+    private JTextField dietAssistantWeightLossTextField;
+    private JTextArea textHasil;
+    private JTextField textNama;
+    private JRadioButton LakilakiRadioButton;
+    private JRadioButton perempuanRadioButton;
+    private JTextField textBerat;
+    private JTextField textTinggi;
+    private JComboBox comboOtot;
+    private JButton clearButton;
+    private JButton submitButton;
+    private JTextField textInput;
+    public JPanel panel;
+    private JLabel labelNama;
+    private JLabel labelKelamin;
+    private JLabel labelBerat;
+    private JLabel labelTinggi;
+    private JLabel labelOtot;
+    private JLabel labelInput;
+    private JLabel labelTanggal;
+    private JTextField textTanggal;
+    private JTextField textBMI;
+    private JLabel labelBMI;
+    private JButton Keluar;
+
+
+//Contractor
+    public PROG_TA() {
+        comboOtot.setSelectedIndex(-1);
+
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+
+            //Method Non static (Method Void)
+            public void actionPerformed(ActionEvent e) {
+                textNama.setText("");
+                LakilakiRadioButton.setSelected(false);
+                perempuanRadioButton.setSelected(false);
+                textBerat.setText("");
+                textBMI.setText("");
+                comboOtot.setSelectedIndex(-1);
+                textTinggi.setText("");
+                textInput.setText("");
+                textTanggal.setText("");
+                textHasil.setText("");
+            }
+        });
+
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int Target,Hpertama,X;
+                float berat, tinggi, bmi;
+                String Jk, kondisi, CbLatihan;
+                boolean RbJkP, RbJkL;
+
+                RbJkL = LakilakiRadioButton.isSelected();
+                RbJkP = perempuanRadioButton.isSelected();
+
+                if (RbJkL) {
+                    Jk = " Laki-laki";
+                } else if (RbJkP) {
+                    Jk = " Perempuan";
+                } else {
+                    Jk = "";
+                }
+                berat = Float.parseFloat(textBerat.getText());
+                tinggi = Float.parseFloat(textTinggi.getText()) / 100;
+
+                bmi = berat / (tinggi * tinggi);
+                textBMI.setText(String.valueOf(bmi));
+                if (bmi < 18.5) {
+                    kondisi = "\n(Kurus)";
+                } else if (bmi <= 22.9) {
+                    kondisi = "\n(Normal)";
+                } else if (bmi < 29.9) {
+                    kondisi = "\n(Overweight)";
+                } else {
+                    kondisi = "\n(Obesitas)";
+                }
+                CbLatihan = String.valueOf(comboOtot.getSelectedItem());
+                switch (CbLatihan) {
+                    case "Biceps & Triceps":
+                        CbLatihan = "\n1. Triangle Push-up\n" + "2. Hammer curls\n" + "3. Lying triceps extension";
+                        break;
+                    case "Perut":
+                        CbLatihan = "\n1. Plank Tap\n" + "2. Bicycle crunch\n" + "3. Crossover Crunch";
+                        break;
+                    case "Kaki":
+                        CbLatihan = "\n1. Squats\n" + "2. Lunge pulses\n" + "3. Olahraga Kardio";
+                        break;
+                    default:
+                        CbLatihan = "";
+                        break;
+                }
+
+               Target = Integer.parseInt(textInput.getText());
+                Hpertama = Integer.parseInt(textTanggal.getText());
+                Jadwal Pilihan = new Jadwal(Target);
+                Pilihan.enqueue(Hpertama);
+                Pilihan.count();
+                Pilihan.printQueue();
+
+
+                textHasil.setText("Nama\t: " +
+                        textNama.getText() +"\nJenis Kelamin :"+
+                        Jk + "\nBerat\t: " +
+                        textBerat.getText() + "\nTinggi\t: " +
+                        textTinggi.getText() + "\nBMI\t: " +
+                        textBMI.getText() + "\n\n PROGRESS WEIGHT LOST"+
+                        "\nTarget Progress :"+Target+" Hari"+
+                        "\nTotal Latihan: "+Hpertama+
+                        " Hari"
+                        + kondisi
+                        + "\n\nLatihan yang direkomendasikan : "
+
+                );
+            }});
+        Keluar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+
+            }
+        });
+    }
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Diet Assistant");
+        frame.setContentPane(new PROG_TA().panel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+        frame.setSize(700, 400);
+        frame.setResizable(true);
+        frame.setTitle("WEIGHT LOSS PROGRAM");
+        frame.setLocation(300,100);
+
+
+        JOptionPane.showMessageDialog(null,"Masukkan Nama, Jenis Kelamin,\n"+
+                "      Berat dan tinggi badan,\n Serta Otot yang ingin dilatih");
+        JOptionPane.showMessageDialog(null,"Berat dan tinggi badan harus diisi !"+
+                "\n Jika kosong program akan error");
+
+    }
+}
+
+
+
+
